@@ -13,6 +13,7 @@ from scoring import recommend_top_six
 
 
 LOG_PATH = Path(__file__).resolve().parent / "logs" / "challenger_outputs.csv"
+STANDARD_CHALLENGER_REGIONS = ("Hoenn", "Sinnoh", "Galar")
 MODEL_NAMES = {
     "balanced": "Balanced Counter Mode",
     "fast_win": "Fast-Win Race Mode",
@@ -94,13 +95,12 @@ def pokemon_lookup(name: str) -> dict[str, object]:
 
 @app.post("/recommend", response_model=RecommendResponse)
 def recommend(request: RecommendRequest) -> RecommendResponse:
-    pokemon = load_region_pokemon_data(request.challenger_region)
-    region_pool = apply_native_region_filter(pokemon, request.challenger_region)
+    pokemon, region_pool, displayed_region = _build_challenger_pool(request)
 
     if not region_pool:
         raise HTTPException(
             status_code=404,
-            detail=f"No Pokemon data available for challenger region '{request.challenger_region}'.",
+            detail=f"No Pokemon data available for challenger region '{displayed_region}'.",
         )
 
     eligible_pool = apply_restriction_filter(region_pool, request.gym_leader_team)
@@ -120,15 +120,15 @@ def recommend(request: RecommendRequest) -> RecommendResponse:
     if len(recommended_team) < 6:
         backup_used = True
         backup_note = (
-            f"Only {len(recommended_team)} legal native {request.challenger_region} Pokemon were available. "
-            "No cross-region backups were added because backup Pokemon must be from the same challenger region."
+            f"Only {len(recommended_team)} legal Pokemon were available for {displayed_region}. "
+            "No extra backups were added outside the selected challenger pool."
         )
     generated_at = datetime.now(timezone.utc).isoformat()
 
     response = RecommendResponse(
         target_gym_leader=request.gym_leader_name,
         gym_leader_team=build_team_display(request.gym_leader_team, pokemon),
-        challenger_region=request.challenger_region,
+        challenger_region=displayed_region,
         model_used=MODEL_NAMES[request.selection_mode],
         generated_at=generated_at,
         backup_used=backup_used,
@@ -138,6 +138,53 @@ def recommend(request: RecommendRequest) -> RecommendResponse:
     )
     save_output_log(request, response)
     return response
+
+
+def _build_challenger_pool(request: RecommendRequest) -> tuple[list[dict], list[dict], str]:
+    if request.challenger_region == "Mixed Region":
+        pokemon = _load_allowed_region_data()
+        region_pool = [
+            entry
+            for entry in pokemon
+            if entry.get("native_region") in STANDARD_CHALLENGER_REGIONS
+        ]
+        return pokemon, region_pool, "Mixed Region (Hoenn, Sinnoh, Galar)"
+
+    if request.challenger_region == "Best Region":
+        best_choice = None
+        for region in STANDARD_CHALLENGER_REGIONS:
+            pokemon = load_region_pokemon_data(region)
+            region_pool = apply_native_region_filter(pokemon, region)
+            eligible_pool = apply_restriction_filter(region_pool, request.gym_leader_team)
+            recommended_team = recommend_top_six(
+                eligible_pool,
+                request.gym_leader_type,
+                request.gym_leader_team,
+                pokemon,
+                request.selection_mode,
+            )
+            team_score = sum(member["counter_score"] for member in recommended_team)
+            choice = (team_score, len(recommended_team), region, pokemon, region_pool)
+            if best_choice is None or choice[:2] > best_choice[:2]:
+                best_choice = choice
+
+        if best_choice is None:
+            return [], [], "Best Region"
+
+        _, _, region, pokemon, region_pool = best_choice
+        return pokemon, region_pool, f"Best Region ({region})"
+
+    pokemon = load_region_pokemon_data(request.challenger_region)
+    region_pool = apply_native_region_filter(pokemon, request.challenger_region)
+    return pokemon, region_pool, request.challenger_region
+
+
+def _load_allowed_region_data() -> list[dict]:
+    pokemon_by_id = {}
+    for region in STANDARD_CHALLENGER_REGIONS:
+        for entry in load_region_pokemon_data(region):
+            pokemon_by_id[entry.get("id")] = entry
+    return list(pokemon_by_id.values())
 
 
 def _resolve_gym_leader_team_data(team_names: list[str], gym_leader_type: str) -> list[dict[str, object]]:
@@ -217,7 +264,7 @@ def save_output_log(request: RecommendRequest, response: RecommendResponse) -> N
                 "gym_leader_region": request.gym_leader_region,
                 "gym_leader_type": request.gym_leader_type,
                 "gym_leader_team": ", ".join(request.gym_leader_team),
-                "challenger_region": request.challenger_region,
+                "challenger_region": response.challenger_region,
                 "model_used": response.model_used,
                 "selection_mode": request.selection_mode,
                 "backup_used": response.backup_used,

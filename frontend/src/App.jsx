@@ -21,9 +21,22 @@ import dragonIcon from "./assets/type-icons/dragon.png";
 import darkIcon from "./assets/type-icons/dark.png";
 import steelIcon from "./assets/type-icons/steel.png";
 import fairyIcon from "./assets/type-icons/fairy.png";
+import kantoRegionImage from "./assets/kanto-region.png";
+import johtoRegionImage from "./assets/johto-region.png";
+import hoennRegionImage from "./assets/hoenn-region.png";
+import sinnohRegionImage from "./assets/sinnoh-region.png";
+import unovaRegionImage from "./assets/unova-region.png";
+import alolaRegionImage from "./assets/alola-region.png";
+import kalosRegionImage from "./assets/kalos-region.png";
+import galarRegionImage from "./assets/galar-region.png";
+import paldeaRegionImage from "./assets/paldea-region.png";
 
 const REGIONS = ["Kanto", "Johto", "Hoenn", "Sinnoh", "Unova", "Kalos", "Alola", "Galar", "Paldea"];
-const CHALLENGER_REGIONS = ["Hoenn", "Sinnoh", "Galar"];
+const CHALLENGER_REGIONS = ["Hoenn", "Sinnoh", "Galar", "Best Region", "Mixed Region"];
+const CHALLENGER_REGION_DESCRIPTIONS = {
+  "Best Region": "Backend picks the strongest region from Hoenn, Sinnoh, and Galar.",
+  "Mixed Region": "Backend builds from the full Hoenn, Sinnoh, and Galar pool."
+};
 const TYPES = [
   "Normal",
   "Fire",
@@ -126,6 +139,92 @@ const QUICK_GENERATE_FORM = {
   pokemon_6: "Electrode"
 };
 
+function QuickGenerateModal({ form, error, isLoading, onChange, onClose, onSubmit }) {
+  const teamNames = POKEMON_FIELDS.map((field) => form[field].trim().toLowerCase()).filter(Boolean);
+  const hasDuplicates = new Set(teamNames).size !== teamNames.length;
+  const canSubmit =
+    form.gym_leader_name.trim()
+    && form.gym_leader_region
+    && form.gym_leader_type
+    && form.challenger_region
+    && POKEMON_FIELDS.every((field) => form[field].trim())
+    && !hasDuplicates;
+
+  return (
+    <div className="quick-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quick-generate-title">
+      <section className="quick-generate-modal">
+        <div className="modal-heading">
+          <div>
+            <p className="step-count">Quick Generate</p>
+            <h1 id="quick-generate-title">Build Lineup Fast</h1>
+          </div>
+          <button className="modal-close-button" type="button" onClick={onClose}>
+            Close
+          </button>
+        </div>
+
+        <div className="quick-generate-grid">
+          <label>
+            Gym Leader Name
+            <input name="gym_leader_name" value={form.gym_leader_name} onChange={onChange} />
+          </label>
+
+          <label>
+            Gym Leader Region
+            <select name="gym_leader_region" value={form.gym_leader_region} onChange={onChange}>
+              {REGIONS.map((region) => (
+                <option key={region} value={region}>{region}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Gym Leader Type
+            <select name="gym_leader_type" value={form.gym_leader_type} onChange={onChange}>
+              {TYPES.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Challenger Region
+            <select name="challenger_region" value={form.challenger_region} onChange={onChange}>
+              {CHALLENGER_REGIONS.map((region) => (
+                <option key={region} value={region}>{region}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <section className="quick-team-section">
+          <h2>Gym Leader Team</h2>
+          <div className="quick-team-grid">
+            {POKEMON_FIELDS.map((field, index) => (
+              <label key={field}>
+                Pokemon {index + 1}
+                <input name={field} value={form[field]} onChange={onChange} />
+              </label>
+            ))}
+          </div>
+        </section>
+
+        {hasDuplicates && <p className="error-message">Duplicate Pokemon are not allowed in the Gym Leader team.</p>}
+        {error && <p className="error-message">{error}</p>}
+
+        <div className="quick-modal-actions">
+          <button className="ghost-button" type="button" onClick={onClose}>
+            Cancel
+          </button>
+          <button type="button" onClick={onSubmit} disabled={!canSubmit || isLoading}>
+            {isLoading ? "Generating..." : "Generate Challenger Lineup"}
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function PokemonImage({ src, name }) {
   if (!src) {
     return <div className="pokemon-image placeholder">?</div>;
@@ -134,9 +233,26 @@ function PokemonImage({ src, name }) {
   return <img className="pokemon-image" src={src} alt={name} loading="lazy" />;
 }
 
-function OptionCard({ title, description, selected, onClick }) {
+const REGION_BACKGROUNDS = {
+  Kanto: kantoRegionImage,
+  Johto: johtoRegionImage,
+  Hoenn: hoennRegionImage,
+  Sinnoh: sinnohRegionImage,
+  Unova: unovaRegionImage,
+  Kalos: kalosRegionImage,
+  Alola: alolaRegionImage,
+  Galar: galarRegionImage,
+  Paldea: paldeaRegionImage
+};
+
+function OptionCard({ title, description, selected, onClick, backgroundImage }) {
   return (
-    <button className={`option-card${selected ? " selected" : ""}`} type="button" onClick={onClick}>
+    <button
+      className={`option-card${backgroundImage ? " image-card" : ""}${selected ? " selected" : ""}`}
+      type="button"
+      onClick={onClick}
+      style={backgroundImage ? { "--card-bg-image": `url(${backgroundImage})` } : undefined}
+    >
       <span>{title}</span>
       {description && <small>{description}</small>}
     </button>
@@ -340,6 +456,7 @@ export default function App() {
   const [copyStatus, setCopyStatus] = useState("");
   const [isBattlePlanOpen, setIsBattlePlanOpen] = useState(false);
   const [isTrainerIdOpen, setIsTrainerIdOpen] = useState(false);
+  const [isQuickGenerateOpen, setIsQuickGenerateOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
   const [step, setStep] = useState(1);
   const [recommendedPokemonOptions, setRecommendedPokemonOptions] = useState([]);
@@ -470,6 +587,7 @@ export default function App() {
     setCopyStatus("");
     setIsBattlePlanOpen(false);
     setIsTrainerIdOpen(false);
+    setIsQuickGenerateOpen(false);
     setShowLanding(false);
     setStep(1);
   }
@@ -481,6 +599,7 @@ export default function App() {
     setCopyStatus("");
     setIsBattlePlanOpen(false);
     setIsTrainerIdOpen(false);
+    setIsQuickGenerateOpen(false);
     setShowLanding(false);
     setStep(1);
   }
@@ -490,12 +609,30 @@ export default function App() {
     setCopyStatus("");
     setIsBattlePlanOpen(false);
     setIsTrainerIdOpen(false);
+    setIsQuickGenerateOpen(false);
     setShowLanding(true);
   }
 
-  async function handleQuickGenerate() {
-    setForm(QUICK_GENERATE_FORM);
-    await requestLineup(QUICK_GENERATE_FORM, { skipAnimation: true });
+  function openQuickGenerate() {
+    setForm((current) => ({
+      ...QUICK_GENERATE_FORM,
+      ...Object.fromEntries(
+        Object.entries(current).filter(([, value]) => String(value).trim())
+      ),
+      selection_mode: "fast_win"
+    }));
+    setError("");
+    setIsQuickGenerateOpen(true);
+  }
+
+  async function handleQuickGenerateSubmit() {
+    const quickForm = {
+      ...form,
+      selection_mode: "fast_win"
+    };
+    setForm(quickForm);
+    setIsQuickGenerateOpen(false);
+    await requestLineup(quickForm, { skipAnimation: true });
   }
 
   async function copyShowdownTeam() {
@@ -568,7 +705,13 @@ export default function App() {
           <h1>Select Gym Leader Region</h1>
           <div className="option-grid region-grid">
             {REGIONS.map((region) => (
-              <OptionCard key={region} title={region} selected={form.gym_leader_region === region} onClick={() => updateValue("gym_leader_region", region)} />
+              <OptionCard
+                key={region}
+                title={region}
+                backgroundImage={REGION_BACKGROUNDS[region]}
+                selected={form.gym_leader_region === region}
+                onClick={() => updateValue("gym_leader_region", region)}
+              />
             ))}
           </div>
           <StepNavigation canContinue={Boolean(form.gym_leader_region)} onBack={() => setStep(1)} onNext={() => setStep(3)} />
@@ -640,13 +783,20 @@ export default function App() {
     if (step === 5) {
       return (
         <section className="wizard-card">
-          <p className="step-count">Step 5 of 6</p>
-          <h1>Select Challenger Region</h1>
-          <div className="option-grid challenger-grid">
-            {CHALLENGER_REGIONS.map((region) => (
-              <OptionCard key={region} title={region} selected={form.challenger_region === region} onClick={() => updateValue("challenger_region", region)} />
-            ))}
-          </div>
+            <p className="step-count">Step 5 of 6</p>
+            <h1>Select Challenger Region</h1>
+            <div className="option-grid challenger-grid">
+              {CHALLENGER_REGIONS.map((region) => (
+                <OptionCard
+                  key={region}
+                  title={region}
+                  description={CHALLENGER_REGION_DESCRIPTIONS[region]}
+                  backgroundImage={REGION_BACKGROUNDS[region]}
+                  selected={form.challenger_region === region}
+                  onClick={() => updateValue("challenger_region", region)}
+                />
+              ))}
+            </div>
           <StepNavigation canContinue={Boolean(form.challenger_region)} onBack={() => setStep(4)} onNext={() => setStep(6)} />
         </section>
       );
@@ -681,10 +831,20 @@ export default function App() {
           {error && <p className="error-message">{error}</p>}
           <div className="landing-actions">
             <button type="button" onClick={createTeam}>Create Team</button>
-            <button className="secondary-button" type="button" onClick={handleQuickGenerate} disabled={isLoading}>
-              {isLoading ? "Generating..." : "Quick Generate"}
+            <button className="secondary-button" type="button" onClick={openQuickGenerate} disabled={isLoading}>
+              Quick Generate
             </button>
           </div>
+          {isQuickGenerateOpen && (
+            <QuickGenerateModal
+              form={form}
+              error={error}
+              isLoading={isLoading}
+              onChange={updateField}
+              onClose={() => setIsQuickGenerateOpen(false)}
+              onSubmit={handleQuickGenerateSubmit}
+            />
+          )}
         </section>
       </main>
     );

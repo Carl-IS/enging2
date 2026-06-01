@@ -4,16 +4,58 @@ id,pokemon,native_region,type_1,type_2,hp,attack,defense,special_attack,special_
 9,Blastoise,Kanto,Water,,79,83,100,85,105,78,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png,False,False,False
 25,Pikachu,Kanto,Electric,,35,55,40,50,50,90,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png,False,False,False
 26,Raichu,Kanto,Electric,,60,90,55,90,80,110,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png,False,False,False
+35,Clefairy,Kanto,Fairy,,70,45,48,60,65,35,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png,False,False,False
+36,Clefable,Kanto,Fairy,,95,70,73,95,90,60,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png,False,False,False
+39,Jigglypuff,Kanto,Normal,Fairy,115,45,20,45,25,20,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png,False,False,False
+40,Wigglytuff,Kanto,Normal,Fairy,140,70,45,85,50,45,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/40.png,False,False,False
 54,Psyduck,Kanto,Water,,50,52,48,65,50,55,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png,False,False,False
 55,Golduck,Kanto,Water,,80,82,78,95,80,85,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png,False,False,False
+60,Poliwag,Kanto,Water,,40,50,40,40,40,90,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/60.png,False,False,False
+61,Poliwhirl,Kanto,Water,,65,65,65,50,50,90,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/61.png,False,False,False
 62,Poliwrath,Kanto,Water,Fighting,90,95,95,70,90,70,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/62.png,False,False,False
+72,Tentacool,Kanto,Water,Poison,40,40,35,50,100,70,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/72.png,False,False,False
+73,Tentacruel,Kanto,Water,Poison,80,70,65,80,120,100,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/73.png,False,False,False
+79,Slowpoke,Kanto,Water,Psychic,90,65,65,40,40,15,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/79.png,False,False,False
+80,Slowbro,Kanto,Water,Psychic,95,75,110,100,80,30,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/80.png,False,False,False
 81,Magnemite,Kanto,Electric,Steel,25,35,70,95,55,45,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png,False,False,False
 82,Magneton,Kanto,Electric,Steel,50,60,95,120,70,70,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png,False,False,False
+86,Seel,Kanto,Water,,65,45,55,45,70,45,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/86.png,False,False,False
+87,Dewgong,Kanto,Water,Ice,90,70,80,70,95,70,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/87.png,False,False,False
+90,Shellder,Kanto,Water,,30,65,100,45,25,40,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/90.png,False,False,False
+91,Cloyster,Kanto,Water,Ice,50,95,180,85,45,70,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/91.png,False,False,False
+98,Krabby,Kanto,Water,,30,105,90,25,25,50,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/98.png,False,False,False
+99,Kingler,Kanto,Water,,55,130,115,50,50,75,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/99.png,False,False,False
 100,Voltorb,Kanto,Electric,,40,30,50,55,55,100,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/100.png,False,False,False
 101,Electrode,Kanto,Electric,,60,50,70,80,80,150,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/101.png,False,False,False
+116,Horsea,Kanto,Water,,30,40,70,70,25,60,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png,False,False,False
+117,Seadra,Kanto,Water,,55,65,95,95,45,85,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png,False,False,False
+118,Goldeen,Kanto,Water,,45,67,60,35,50,63,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/118.png,False,False,False
+119,Seaking,Kanto,Water,,80,92,65,65,80,68,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/119.png,False,False,False
+120,Staryu,Kanto,Water,,30,45,55,70,55,85,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png,False,False,False
+121,Starmie,Kanto,Water,Psychic,60,75,85,100,85,115,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png,False,False,False
+122,Mr Mime,Kanto,Psychic,Fairy,40,45,65,100,120,90,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/122.png,False,False,False
 125,Electabuzz,Kanto,Electric,,65,83,57,95,85,105,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png,False,False,False
+129,Magikarp,Kanto,Water,,20,10,55,15,20,80,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png,False,False,False
+130,Gyarados,Kanto,Water,Flying,95,125,79,60,100,81,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png,False,False,False
+131,Lapras,Kanto,Water,Ice,130,85,80,85,95,60,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png,False,False,False
+134,Vaporeon,Kanto,Water,,130,65,60,110,95,65,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png,False,False,False
 135,Jolteon,Kanto,Electric,,65,65,60,110,95,130,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png,False,False,False
+138,Omanyte,Kanto,Rock,Water,35,40,100,90,55,35,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/138.png,False,False,False
+139,Omastar,Kanto,Rock,Water,70,60,125,115,70,55,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/139.png,False,False,False
+140,Kabuto,Kanto,Rock,Water,30,80,90,55,45,55,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/140.png,False,False,False
+141,Kabutops,Kanto,Rock,Water,60,115,105,65,70,80,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/141.png,False,False,False
 145,Zapdos,Kanto,Electric,Flying,90,90,85,125,90,100,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png,True,False,False
+155,Cyndaquil,Johto,Fire,,39,52,43,60,50,65,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/155.png,False,False,False
+156,Quilava,Johto,Fire,,58,64,58,80,65,80,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/156.png,False,False,False
+157,Typhlosion,Johto,Fire,,78,84,78,109,85,100,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/157.png,False,False,False
+218,Slugma,Johto,Fire,,40,40,40,70,40,20,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/218.png,False,False,False
+219,Magcargo,Johto,Fire,Rock,60,50,120,90,80,30,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/219.png,False,False,False
+228,Houndour,Johto,Dark,Fire,45,60,30,80,50,65,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/228.png,False,False,False
+229,Houndoom,Johto,Dark,Fire,75,90,50,110,80,95,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/229.png,False,False,False
+240,Magby,Johto,Fire,,45,75,37,70,55,83,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/240.png,False,False,False
+243,Raikou,Johto,Electric,,90,85,75,115,100,115,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png,True,False,False
+244,Entei,Johto,Fire,,115,115,85,90,75,100,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png,True,False,False
+250,Ho Oh,Johto,Fire,Flying,106,130,90,110,154,90,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png,True,False,False
 252,Treecko,Hoenn,Grass,,40,45,35,65,55,70,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/252.png,False,False,False
 253,Grovyle,Hoenn,Grass,,50,65,45,85,65,95,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/253.png,False,False,False
 254,Sceptile,Hoenn,Grass,,70,85,65,105,85,120,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png,False,False,False
@@ -412,6 +454,15 @@ id,pokemon,native_region,type_1,type_2,hp,attack,defense,special_attack,special_
 647,Keldeo Ordinary,Unova,Water,Fighting,91,72,90,129,90,108,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/647.png,False,True,False
 648,Meloetta Aria,Unova,Normal,Psychic,100,77,77,128,128,90,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/648.png,False,True,False
 649,Genesect,Unova,Bug,Steel,71,120,95,120,95,99,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png,False,True,False
+691,Dragalge,Kalos,Poison,Dragon,65,75,90,97,123,44,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/691.png,False,False,False
+696,Tyrunt,Kalos,Rock,Dragon,58,89,77,45,45,48,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/696.png,False,False,False
+697,Tyrantrum,Kalos,Rock,Dragon,82,121,119,69,59,71,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/697.png,False,False,False
+704,Goomy,Kalos,Dragon,,45,50,35,55,75,40,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/704.png,False,False,False
+705,Sliggoo,Kalos,Dragon,,68,75,53,83,113,60,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/705.png,False,False,False
+706,Goodra,Kalos,Dragon,,90,100,70,110,150,80,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/706.png,False,False,False
+714,Noibat,Kalos,Flying,Dragon,40,30,35,45,40,55,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/714.png,False,False,False
+715,Noivern,Kalos,Flying,Dragon,85,70,80,97,80,123,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/715.png,False,False,False
+718,Zygarde 50,Kalos,Dragon,Ground,108,100,121,81,95,95,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png,True,False,False
 810,Grookey,Galar,Grass,,50,65,50,40,40,65,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/810.png,False,False,False
 811,Thwackey,Galar,Grass,,70,85,70,55,60,80,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/811.png,False,False,False
 812,Rillaboom,Galar,Grass,,100,125,90,60,70,85,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/812.png,False,False,False

@@ -2,6 +2,7 @@ from typing import Any
 
 
 ALLOWED_CHALLENGER_REGIONS = {"Hoenn", "Sinnoh", "Galar"}
+NATIONAL_DEX_BANNED_POKEMON = {"dragapult", "sneasler"}
 
 
 def apply_native_region_filter(pokemon: list[dict[str, Any]], challenger_region: str) -> list[dict[str, Any]]:
@@ -18,6 +19,7 @@ def apply_restriction_filter(
         entry
         for entry in pokemon
         if not _is_restricted(entry)
+        and entry.get("pokemon", "").lower() not in NATIONAL_DEX_BANNED_POKEMON
         and entry.get("pokemon", "").lower() not in blocked_names
     ]
 

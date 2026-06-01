@@ -404,11 +404,29 @@ select:focus,
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.challenger-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.challenger-grid .option-card {
+  grid-column: span 2;
+}
+
+.challenger-grid .option-card:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+.challenger-grid .option-card:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+
 .method-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .option-card {
+  position: relative;
+  overflow: hidden;
   display: grid;
   min-height: 72px;
   place-items: center;
@@ -421,6 +439,35 @@ select:focus,
   color: var(--ink);
   text-align: center;
   box-shadow: 0 5px 0 rgba(27, 42, 65, 0.18);
+}
+
+.option-card.image-card {
+  min-height: 116px;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.46)),
+    var(--card-bg-image);
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.option-card.image-card::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0 42%, rgba(15, 23, 42, 0.72) 100%);
+  content: "";
+}
+
+.option-card.image-card span,
+.option-card.image-card small {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  text-shadow:
+    -1px -1px 0 #111827,
+    1px -1px 0 #111827,
+    -1px 1px 0 #111827,
+    1px 1px 0 #111827;
 }
 
 .option-card span {
@@ -1303,6 +1350,81 @@ td:last-child {
   box-shadow: 0 4px 0 #0d2149;
 }
 
+.quick-modal-overlay {
+  position: fixed;
+  z-index: 35;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(11, 18, 32, 0.72);
+}
+
+.quick-generate-modal {
+  width: min(920px, 100%);
+  max-height: min(90vh, 860px);
+  overflow-y: auto;
+  border: 4px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(255, 203, 5, 0.28), transparent 18%),
+    linear-gradient(180deg, #ffffff, #fffdf4);
+  color: var(--ink);
+  text-align: left;
+  box-shadow: 0 18px 0 rgba(0, 0, 0, 0.28), 0 28px 60px rgba(0, 0, 0, 0.38);
+}
+
+.quick-generate-modal .modal-heading h1 {
+  color: var(--battle-blue-dark);
+}
+
+.quick-generate-grid,
+.quick-team-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.quick-generate-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.quick-team-section {
+  display: grid;
+  gap: 12px;
+  border: 3px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  background:
+    linear-gradient(180deg, #ffffff, #e7f1ff);
+  box-shadow: 0 5px 0 rgba(27, 42, 65, 0.16);
+}
+
+.quick-team-section h2 {
+  color: var(--battle-red);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.quick-team-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.quick-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+  border-top: 3px solid rgba(27, 42, 65, 0.1);
+  padding-top: 16px;
+}
+
+.quick-modal-actions button {
+  min-width: 180px;
+  padding: 0 18px;
+}
+
 .gachapon-page {
   display: flex;
   min-height: 100vh;
@@ -1935,6 +2057,11 @@ td:last-child {
     grid-column: 1;
   }
 
+  .quick-generate-grid,
+  .quick-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .output-heading {
     align-items: flex-start;
   }
@@ -1978,6 +2105,12 @@ td:last-child {
     grid-template-columns: 1fr;
   }
 
+  .challenger-grid .option-card,
+  .challenger-grid .option-card:nth-child(4),
+  .challenger-grid .option-card:nth-child(5) {
+    grid-column: auto;
+  }
+
   .type-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2000,8 +2133,18 @@ td:last-child {
 
   .trainer-form,
   .trainer-match-section,
-  .trainer-team-grid {
+  .trainer-team-grid,
+  .quick-generate-grid,
+  .quick-team-grid {
     grid-template-columns: 1fr;
+  }
+
+  .quick-modal-actions {
+    display: grid;
+  }
+
+  .quick-modal-actions button {
+    width: 100%;
   }
 
   .trainer-id-header,

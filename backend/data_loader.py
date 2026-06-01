@@ -1,4 +1,5 @@
 import csv
+import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,7 @@ except ImportError:
 
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_PATH = BASE_DIR / "data" / "pokemon_cache.csv"
+MOVE_CACHE_PATH = BASE_DIR / "data" / "pokemon_move_cache.json"
 POKEAPI_TIMEOUT_SECONDS = 6
 POKEAPI_MAX_WORKERS = 16
 
@@ -184,6 +186,24 @@ def load_pokemon_by_name(name: str) -> dict[str, Any] | None:
     return fetched
 
 
+def load_learnable_move_keys(name: str) -> set[str] | None:
+    normalized_name = name.strip().lower()
+    if not normalized_name:
+        return None
+
+    move_cache = _read_move_cache()
+    if normalized_name in move_cache:
+        return set(move_cache[normalized_name])
+
+    move_keys = _fetch_learnable_move_keys(normalized_name)
+    if move_keys is None:
+        return None
+
+    move_cache[normalized_name] = sorted(move_keys)
+    _write_move_cache(move_cache)
+    return move_keys
+
+
 def build_team_display(team_names: list[str], pokemon_data: list[dict[str, Any]]) -> list[dict[str, str | None]]:
     by_name = {entry.get("pokemon", "").lower(): entry for entry in pokemon_data}
     return [{"pokemon": name, "sprite_url": _sprite_for_name(name, by_name)} for name in team_names]
@@ -205,6 +225,29 @@ def _write_cache(rows: list[dict[str, Any]]) -> None:
         writer = csv.DictWriter(cache_file, fieldnames=CSV_FIELDS)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _read_move_cache() -> dict[str, list[str]]:
+    if not MOVE_CACHE_PATH.exists() or MOVE_CACHE_PATH.stat().st_size == 0:
+        return {}
+
+    try:
+        with MOVE_CACHE_PATH.open(encoding="utf-8") as cache_file:
+            payload = json.load(cache_file)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+    return {
+        str(name): [str(move) for move in moves]
+        for name, moves in payload.items()
+        if isinstance(moves, list)
+    }
+
+
+def _write_move_cache(move_cache: dict[str, list[str]]) -> None:
+    MOVE_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with MOVE_CACHE_PATH.open("w", encoding="utf-8") as cache_file:
+        json.dump(move_cache, cache_file, indent=2, sort_keys=True)
 
 
 def _fetch_pokemon_data() -> list[dict[str, Any]]:
@@ -280,6 +323,20 @@ def _fetch_pokemon_by_name(name: str) -> dict[str, Any] | None:
         return None
 
     return _build_pokemon_row(pokemon, species)
+
+
+def _fetch_learnable_move_keys(name: str) -> set[str] | None:
+    if requests is None:
+        return None
+
+    try:
+        response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name.replace(' ', '-')}", timeout=POKEAPI_TIMEOUT_SECONDS)
+        response.raise_for_status()
+        pokemon = response.json()
+    except requests.RequestException:
+        return None
+
+    return {_move_key(move["move"]["name"]) for move in pokemon.get("moves", [])}
 
 
 def _build_pokemon_row(pokemon: dict[str, Any], species: dict[str, Any]) -> dict[str, Any]:
@@ -365,3 +422,7 @@ def _normalize_row(row: dict[str, Any]) -> dict[str, Any]:
     normalized["type_2"] = normalized.get("type_2") or ""
     normalized["sprite_url"] = normalized.get("sprite_url") or _sprite_url(normalized.get("id"))
     return normalized
+
+
+def _move_key(move_name: str) -> str:
+    return "".join(character for character in move_name.lower() if character.isalnum())

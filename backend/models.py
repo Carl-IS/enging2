@@ -3,7 +3,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-AllowedChallengerRegion = Literal["Hoenn", "Sinnoh", "Galar"]
+AllowedChallengerRegion = Literal["Hoenn", "Sinnoh", "Galar", "Best Region", "Mixed Region"]
 SelectionMode = Literal["balanced", "fast_win"]
 
 
@@ -76,7 +76,7 @@ class BattlePlanItem(BaseModel):
 class RecommendResponse(BaseModel):
     target_gym_leader: str
     gym_leader_team: list[GymLeaderPokemon]
-    challenger_region: AllowedChallengerRegion
+    challenger_region: str
     model_used: str
     generated_at: str
     backup_used: bool = False

@@ -1,5 +1,7 @@
 from typing import Any
 
+from data_loader import load_learnable_move_keys
+
 
 TYPE_EFFECTIVENESS = {
     "Normal": {"Rock": 0.5, "Ghost": 0, "Steel": 0.5},
@@ -37,7 +39,7 @@ SET_DETAILS = {
     "Roserade": {"gender": "F", "item": "Black Sludge", "ability": "Natural Cure", "evs": "252 SpA / 4 SpD / 252 Spe", "nature": "Timid", "moves": ["Giga Drain", "Sludge Bomb", "Sleep Powder", "Spikes"]},
     "Lucario": {"gender": "M", "item": "Life Orb", "ability": "Inner Focus", "evs": "252 Atk / 4 SpD / 252 Spe", "nature": "Jolly", "moves": ["Close Combat", "Meteor Mash", "Extreme Speed", "Swords Dance"]},
     "Weavile": {"gender": "F", "item": "Heavy-Duty Boots", "ability": "Pressure", "evs": "252 Atk / 4 SpD / 252 Spe", "nature": "Jolly", "moves": ["Icicle Crash", "Knock Off", "Ice Shard", "Low Kick"]},
-    "Togekiss": {"gender": "F", "item": "Leftovers", "ability": "Serene Grace", "evs": "252 HP / 4 SpA / 252 Spe", "nature": "Timid", "moves": ["Air Slash", "Moonblast", "Thunder Wave", "Roost"]},
+    "Togekiss": {"gender": "F", "item": "Leftovers", "ability": "Serene Grace", "evs": "252 HP / 4 SpA / 252 Spe", "nature": "Timid", "moves": ["Air Slash", "Dazzling Gleam", "Thunder Wave", "Roost"]},
     "Rillaboom": {"gender": "M", "item": "Miracle Seed", "ability": "Overgrow", "evs": "252 Atk / 4 SpD / 252 Spe", "nature": "Jolly", "moves": ["Wood Hammer", "Grassy Glide", "Knock Off", "U-turn"]},
     "Cinderace": {"gender": "M", "item": "Heavy-Duty Boots", "ability": "Blaze", "evs": "252 Atk / 4 SpD / 252 Spe", "nature": "Jolly", "moves": ["Pyro Ball", "High Jump Kick", "U-turn", "Sucker Punch"]},
     "Inteleon": {"gender": "M", "item": "Scope Lens", "ability": "Sniper", "evs": "252 SpA / 4 SpD / 252 Spe", "nature": "Timid", "moves": ["Hydro Pump", "Ice Beam", "Dark Pulse", "U-turn"]},
@@ -59,7 +61,7 @@ LEGAL_MOVE_OPTIONS = {
     "Roserade": ["Giga Drain", "Sludge Bomb", "Sleep Powder", "Spikes", "Toxic Spikes", "Leaf Storm"],
     "Lucario": ["Close Combat", "Meteor Mash", "Extreme Speed", "Swords Dance", "Aura Sphere", "Flash Cannon"],
     "Weavile": ["Icicle Crash", "Knock Off", "Ice Shard", "Low Kick", "Swords Dance", "Brick Break"],
-    "Togekiss": ["Air Slash", "Moonblast", "Thunder Wave", "Roost", "Aura Sphere", "Flamethrower"],
+    "Togekiss": ["Air Slash", "Dazzling Gleam", "Thunder Wave", "Roost", "Aura Sphere", "Flamethrower"],
     "Rillaboom": ["Wood Hammer", "Grassy Glide", "Knock Off", "U-turn", "Drain Punch", "Swords Dance"],
     "Cinderace": ["Pyro Ball", "High Jump Kick", "U-turn", "Sucker Punch", "Gunk Shot", "Court Change"],
     "Inteleon": ["Hydro Pump", "Ice Beam", "Dark Pulse", "U-turn", "Surf", "Air Slash"],
@@ -67,6 +69,39 @@ LEGAL_MOVE_OPTIONS = {
     "Coalossal": ["Rock Blast", "Flamethrower", "Rapid Spin", "Stealth Rock", "Earth Power", "Will-O-Wisp"],
     "Dragapult": ["Draco Meteor", "Shadow Ball", "Flamethrower", "U-turn", "Dragon Darts", "Thunderbolt"],
 }
+
+GENERAL_MOVE_POOL = [
+    "Protect",
+    "Substitute",
+    "Rest",
+    "Sleep Talk",
+    "Facade",
+    "Body Slam",
+    "Return",
+    "Earthquake",
+    "Rock Slide",
+    "Stone Edge",
+    "Iron Head",
+    "Crunch",
+    "Shadow Ball",
+    "Psychic",
+    "Thunderbolt",
+    "Ice Beam",
+    "Flamethrower",
+    "Surf",
+    "Waterfall",
+    "Giga Drain",
+    "Energy Ball",
+    "Sludge Bomb",
+    "Dragon Claw",
+    "Dark Pulse",
+    "Air Slash",
+    "Close Combat",
+    "X-Scissor",
+    "Moonblast",
+    "Calm Mind",
+    "Swords Dance",
+]
 
 FALLBACK_ABILITIES = {
     "Abomasnow": "Snow Warning",
@@ -77,8 +112,10 @@ FALLBACK_ABILITIES = {
     "Centiskorch": "Flash Fire",
     "Claydol": "Levitate",
     "Copperajah": "Sheer Force",
+    "Dustox": "Shield Dust",
     "Drednaw": "Strong Jaw",
     "Dracovish": "Strong Jaw",
+    "Dracozolt": "Volt Absorb",
     "Duraludon": "Light Metal",
     "Eiscue Ice": "Ice Face",
     "Falinks": "Battle Armor",
@@ -89,15 +126,20 @@ FALLBACK_ABILITIES = {
     "Grapploct": "Limber",
     "Grimmsnarl": "Prankster",
     "Hatterene": "Healer",
+    "Honchkrow": "Super Luck",
     "Indeedee Male": "Inner Focus",
+    "Mamoswine": "Thick Fat",
+    "Metagross": "Clear Body",
     "Morpeko Full Belly": "Hunger Switch",
     "Mr. Rime": "Tangled Feet",
     "Obstagoon": "Reckless",
+    "Overqwil": "Intimidate",
     "Orbeetle": "Swarm",
     "Perrserker": "Battle Armor",
     "Polteageist": "Weak Armor",
     "Runerigus": "Wandering Spirit",
     "Sandaconda": "Sand Spit",
+    "Shiftry": "Chlorophyll",
     "Sirfetchd": "Steadfast",
     "Thievul": "Run Away",
     "Toxtricity Amped": "Punk Rock",
@@ -241,21 +283,28 @@ def _recommended_set(pokemon: dict[str, Any]) -> dict[str, Any]:
 
 def _validated_moves(pokemon: dict[str, Any], moves: list[str]) -> list[str]:
     legal_options = LEGAL_MOVE_OPTIONS.get(pokemon["pokemon"])
-    if not legal_options:
-        return moves[:4]
+    learnable_move_keys = load_learnable_move_keys(pokemon["pokemon"])
+    candidate_moves = legal_options or moves
+    fallback_pool = [*(legal_options or []), *moves, *GENERAL_MOVE_POOL]
 
     selected = []
-    for move in moves:
-        if move in legal_options and move not in selected:
+    for move in candidate_moves:
+        if _move_is_allowed(move, legal_options, learnable_move_keys) and move not in selected:
             selected.append(move)
 
-    for move in legal_options:
+    for move in fallback_pool:
         if len(selected) >= 4:
             break
-        if move not in selected:
+        if _move_is_allowed(move, legal_options, learnable_move_keys) and move not in selected:
             selected.append(move)
 
-    return selected[:4]
+    if selected:
+        return selected[:4]
+
+    if learnable_move_keys is None:
+        return candidate_moves[:4]
+
+    return []
 
 
 
@@ -314,6 +363,18 @@ def _fallback_moves(pokemon: dict[str, Any]) -> list[str]:
             break
         moves.append(move)
     return moves[:4]
+
+
+def _move_is_allowed(move: str, legal_options: list[str] | None, learnable_move_keys: set[str] | None) -> bool:
+    if legal_options is not None and move not in legal_options:
+        return False
+    if learnable_move_keys is None:
+        return True
+    return _move_key(move) in learnable_move_keys
+
+
+def _move_key(move_name: str) -> str:
+    return "".join(character for character in move_name.lower() if character.isalnum())
 def _select_diverse_team(scored: list[dict[str, Any]], selection_mode: str = "balanced") -> list[dict[str, Any]]:
     remaining = sorted(scored, key=lambda entry: entry["base_counter_score"], reverse=True)
     selected: list[dict[str, Any]] = []
