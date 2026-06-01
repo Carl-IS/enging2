@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchAvailableGymPokemon, fetchPokemonLookup, generateChallengerLineup } from "./api";
 import BattlePlanModal from "./components/BattlePlanModal";
 import GachaponPull from "./components/GachaponPull";
+import TrainerIdModal from "./components/TrainerIdModal";
 import normalIcon from "./assets/type-icons/normal.png";
 import fireIcon from "./assets/type-icons/fire.png";
 import waterIcon from "./assets/type-icons/water.png";
@@ -338,6 +339,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [copyStatus, setCopyStatus] = useState("");
   const [isBattlePlanOpen, setIsBattlePlanOpen] = useState(false);
+  const [isTrainerIdOpen, setIsTrainerIdOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
   const [step, setStep] = useState(1);
   const [recommendedPokemonOptions, setRecommendedPokemonOptions] = useState([]);
@@ -467,6 +469,7 @@ export default function App() {
     setError("");
     setCopyStatus("");
     setIsBattlePlanOpen(false);
+    setIsTrainerIdOpen(false);
     setShowLanding(false);
     setStep(1);
   }
@@ -477,6 +480,7 @@ export default function App() {
     setError("");
     setCopyStatus("");
     setIsBattlePlanOpen(false);
+    setIsTrainerIdOpen(false);
     setShowLanding(false);
     setStep(1);
   }
@@ -485,6 +489,7 @@ export default function App() {
     setError("");
     setCopyStatus("");
     setIsBattlePlanOpen(false);
+    setIsTrainerIdOpen(false);
     setShowLanding(true);
   }
 
@@ -710,6 +715,9 @@ export default function App() {
             <h1>Recommended Challenger Team</h1>
           </div>
           <div className="result-actions">
+            <button className="trainer-id-button" type="button" onClick={() => setIsTrainerIdOpen(true)} disabled={!result}>
+              Generate Trainer ID
+            </button>
             <button className="copy-button" type="button" onClick={copyShowdownTeam}>Copy Showdown Team</button>
             <button className="copy-button" type="button" onClick={() => setIsBattlePlanOpen(true)}>View Battle Plan</button>
             <button className="ghost-button" type="button" onClick={backToHome}>Back to Home</button>
@@ -807,6 +815,7 @@ export default function App() {
         )}
       </section>
       <BattlePlanModal isOpen={isBattlePlanOpen} onClose={() => setIsBattlePlanOpen(false)} battlePlan={result?.battle_plan || []} />
+      <TrainerIdModal isOpen={isTrainerIdOpen} onClose={() => setIsTrainerIdOpen(false)} results={result} formData={form} />
     </main>
   );
 }
